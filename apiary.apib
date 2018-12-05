@@ -1,0 +1,484 @@
+FORMAT: 1A
+HOST: https://app.getflits.com/api/1
+
+# Flits
+
+## Profile [/{user_id}/{customer_id}/{action}{?token}]
+
+### Profile Save [POST]
+    
++ Parameters
+
+    + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team.
+    
+    + customer_id (required, number) ... Currently logged in customer id (shopify customer id).
+    
+    + action (required, String) ... profile_save
+    
++ Request (application/x-www-form-urlencoded)
+
+        first_name: Milind
+        last_name: Patel
+        email: milind@getflits.com
+        phone: 0000000000
+        birthdate: 2018-04-19
+        gender: male OR female
+
++ Response 200 (application/json)
+    
+        {
+            "status": true,
+            "customer": {
+                    "id": 1,
+                    "customer_id": 464716267560,
+                    "name": "Milind Patel",
+                    "email": "ma353353@gmail.com",
+                    "is_from_shopify": 1,
+                    "is_from_mailchimp": 0,
+                    "accepts_marketing": 0,
+                    "is_subscriber": 0,
+                    "state": "enabled",
+                    "phone": "",
+                    "birthdate": "2018-04-19",
+                    "gender": "male",
+                    "credits": 0,
+                    "points": 0,
+                    "is_register_given": 1,
+                    "is_subscriber_given": 0,
+                    "is_first_order_given": 0,
+                    "login_password": "3twMyh",
+                    "login_provider": "facebook",
+                    "login_provider_token": "1298391853623559",
+                    "created_at": "2018-03-28 07:02:38",
+                    "updated_at": "2018-04-19 06:39:48",
+                    "total_spent_credits": 0,
+                    "refund_credits": 0,
+                    "promotional_credits": 0
+            }
+        }
+
+### Update Password [POST]
++ Parameters 
+
+     + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team.
+    
+    + customer_id (required, number) ... Currently logged in customer id (shopify customer id).
+    
+    + action (required, String) ... update_password
+    
++ Request (application/x-www-form-urlencoded)
+    
+        password: test@123
+        password_confirmation: test@123
+
++ Response 200 (application/json)
+    
+        {
+            "status": true,
+            "customer": {
+                "data": {
+                  "id": 464716267560,
+                  "email": "ma353353@gmail.com",
+                  "accepts_marketing": false,
+                  "created_at": "2018-03-28T03:02:39-04:00",
+                  "updated_at": "2018-04-19T02:48:47-04:00",
+                  "first_name": "Milind",
+                  "last_name": "Patel",
+                  "orders_count": 0,
+                  "state": "enabled",
+                  "total_spent": "0.00",
+                  "last_order_id": null,
+                  "note": null,
+                  "verified_email": true,
+                  "multipass_identifier": null,
+                  "tax_exempt": false,
+                  "phone": null,
+                  "tags": "",
+                  "last_order_name": null,
+                  "addresses": [
+                    
+                  ]
+                }
+            }
+        }
+
+##  Store Credits [/{user_id}/{customer_id}/credit/{action}{?token}]
+
+### Get Store Credit Details [GET]
+    You can get store credit details for customer using customer's shopify id.
+    
++ Parameters
+
+    + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team.
+    
+    + customer_id (required, number) ... Currently logged in customer id (shopify customer id).
+    
+    + action (required, String) ... get_credit
+    
++ Response 200 (application/json)
+        
+        {
+           "status":true,
+           "customer":
+                {
+                      "id":1,
+                      "customer_id":464716267560,
+                      "name":"Milind Patel",
+                      "email":"milind@gmail.com",
+                      "is_from_shopify":1,
+                      "is_from_mailchimp":0,
+                      "accepts_marketing":0,
+                      "is_subscriber":0,
+                      "state":"enabled",
+                      "phone":null,
+                      "birthdate":null,
+                      "gender":null,
+                      "credits":0,
+                      "points":0,
+                      "is_register_given":1,
+                      "is_subscriber_given":0,
+                      "is_first_order_given":0,
+                      "created_at":"2018-03-28 07:02:38",
+                      "updated_at":"2018-03-28 07:02:49",
+                      "total_spent_credits":0,
+                      "refund_credits":0,
+                      "promotional_credits":0,
+                      "total_earned_credits":0,
+                      "credit_log":[
+                
+                      ],
+                      "earned_credits":[
+                
+                      ],
+                      "spent_credits":[
+                
+                      ]
+           }
+           
+        }
+
+### Get Available Spent Rules [GET]
+
+You can get Available spent rules created by admin by using following api.
+
++ attributes
+    
+    + cart (string) - cart data from shopify -> json formatted -> base64encoded cart 
+            1. In javascript you can use this after receiving cart from (/cart.js) 
+               btoa(unescape(encodeURIComponent(JSON.stringify(cart))))
+    
++ Request (application/x-www-form-urlencoded)
+
+        cart:  eyJ0b2tlbiI6ImIxMTdjNjI0ZDAwN2FiMWFiZTYyNjdlNWVmOWU0OGFkIiwibm90ZSI6bnVsbCwiYXR0cmlidXRlcyI6e30sIm9yaWdpbmFsX3RvdGFsX3ByaWNlIjozMzAyLCJ0b3RhbF9wcmljZSI6MzMwMiwidG90YWxfZGlzY291bnQiOjAsInRvdGFsX3dlaWdodCI6MC4wLCJpdGVtX2NvdW50IjozLCJpdGVtcyI6W3siaWQiOjE1NDEyMzczNTIwNDM1LCJwcm9wZXJ0aWVzIjpudWxsLCJxdWFudGl0eSI6MSwidmFyaWFudF9pZCI6MTU0MTIzNzM1MjA0MzUsImtleSI6IjE1NDEyMzczNTIwNDM1OmU4MTIyMzk5YTAzZTJhNzZlNDllYTZmN2MyNjcxMTc2IiwidGl0bGUiOiJTa2lubGVzcyBDaGlja2VuIEJyZWFzdCAtIFBhY2tldCIsInByaWNlIjoyNTczLCJvcmlnaW5hbF9wcmljZSI6MjU3MywiZGlzY291bnRlZF9wcmljZSI6MjU3MywibGluZV9wcmljZSI6MjU3Mywib3JpZ2luYWxfbGluZV9wcmljZSI6MjU3MywidG90YWxfZGlzY291bnQiOjAsImRpc2NvdW50cyI6W10sInNrdSI6IkxNSFhBRVhYQ0hTS0JSU1QiLCJncmFtcyI6MCwidmVuZG9yIjoiRnJvbSBVQUUiLCJ0YXhhYmxlIjp0cnVlLCJwcm9kdWN0X2lkIjoxMDI0NTEwNjQ0NiwiZ2lmdF9jYXJkIjpmYWxzZSwidXJsIjoiXC9wcm9kdWN0c1wvc2tpbmxlc3MtY2hpY2tlbi1icmVhc3Q/dmFyaWFudD0xNTQxMjM3MzUyMDQzNSIsImltYWdlIjoiaHR0cHM6XC9cL2Nkbi5zaG9waWZ5LmNvbVwvc1wvZmlsZXNcLzFcLzE4OTFcLzY0MDVcL3Byb2R1Y3RzXC9zaG9wLW9ubGluZS1mcm9tLXVhZS1tZWF0LXNraW5sZXNzLWNoaWNrZW4tYnJlYXN0LWZyZXNoLWZvb2QtaW4tZHViYWktYW5kLWFidS1kaGFiaS0yNDYyMTE5OTE4Mi5qcGc/dj0xNTEzMjAwMzIwIiwiaGFuZGxlIjoic2tpbmxlc3MtY2hpY2tlbi1icmVhc3QiLCJyZXF1aXJlc19zaGlwcGluZyI6dHJ1ZSwicHJvZHVjdF90eXBlIjoiTWVhdCIsInByb2R1Y3RfdGl0bGUiOiJTa2lubGVzcyBDaGlja2VuIEJyZWFzdCIsInByb2R1Y3RfZGVzY3JpcHRpb24iOiIxIHBhY2tldCA9IDUwMCBncmFtcyA9IDItMyBwaWVjZXMgKGFwcHJveC4pIFxuUGx1bXAsIGhlYWx0aGZ1bCBhbmQgYnVyc3Rpbmcgd2l0aCBmbGF2b3JmdWwganVpY2VzLCB0aGVzZSBjaGlja2VuIGJyZWFzdHMgYXJlIGlkZWFsIGZvciBzYW5kd2ljaGVzIGFuZCBzYWxhZHMuIFJ1YiB3aXRoIGEgZ2VuZXJvdXMgYW1vdW50IG9mIG9saXZlIG9pbCBhbmQgZ3JpbGwsIHR1cm5pbmcgYW5kIHJvdGF0aW5nIHRvIG1ha2UgYSBjcmlzc2Nyb3NzIHBhdHRlcm4uIFNlcnZlIG9uIGNydXN0eSBicmVhZCB3aXRoIGdyZWVucywgdGhpbiBzbGljZXMgb2YgY3Jpc3AsIGp1aWN5IHBlYXIgYW5kIGhvbmV5IG11c3RhcmQgZm9yIGEgdW5pcXVlIHN3ZWV0IGFuZCBzYXZvcnkgc2FuZHdpY2guIiwidmFyaWFudF90aXRsZSI6IlBhY2tldCIsInZhcmlhbnRfb3B0aW9ucyI6WyJQYWNrZXQiXX0seyJpZCI6MTU0MTIzNDQ5NDY3MzksInByb3BlcnRpZXMiOnsiUXVhbnRpdHkiOiIwLjI1S2cifSwicXVhbnRpdHkiOjEsInZhcmlhbnRfaWQiOjE1NDEyMzQ0OTQ2NzM5LCJrZXkiOiIxNTQxMjM0NDk0NjczOTpiYzE5NjdkOGExZDZiODljYWMxNTNlNDkyMGI5ZDNmNiIsInRpdGxlIjoiT3JhbmdlIFZhbGVuY2lhIC0gWCAwLjI1MCBrZ3MiLCJwcmljZSI6MTAwLCJvcmlnaW5hbF9wcmljZSI6MTAwLCJkaXNjb3VudGVkX3ByaWNlIjoxMDAsImxpbmVfcHJpY2UiOjEwMCwib3JpZ2luYWxfbGluZV9wcmljZSI6MTAwLCJ0b3RhbF9kaXNjb3VudCI6MCwiZGlzY291bnRzIjpbXSwic2t1IjoiQkJCWFhNUUZYWDEwMTU5IiwiZ3JhbXMiOjAsInZlbmRvciI6IkZyb20gU291dGggQWZyaWNhIiwidGF4YWJsZSI6dHJ1ZSwicHJvZHVjdF9pZCI6MTAyNDUwNjY1NzQsImdpZnRfY2FyZCI6ZmFsc2UsInVybCI6IlwvcHJvZHVjdHNcL29yYW5nZS12YWwtZWd5cHQ/dmFyaWFudD0xNTQxMjM0NDk0NjczOSIsImltYWdlIjoiaHR0cHM6XC9cL2Nkbi5zaG9waWZ5LmNvbVwvc1wvZmlsZXNcLzFcLzE4OTFcLzY0MDVcL3Byb2R1Y3RzXC9zaG9wLW9ubGluZS1mcm9tLWVneXB0LWZydWl0cy12YWxlbmNpYS1vcmFuZ2UtZnJlc2gtZm9vZC1pbi1kdWJhaS1hbmQtYWJ1LWRoYWJpLTI0NjI0MzM2MDE0LmpwZz92PTE1Mzg1NzUzMTIiLCJoYW5kbGUiOiJvcmFuZ2UtdmFsLWVneXB0IiwicmVxdWlyZXNfc2hpcHBpbmciOnRydWUsInByb2R1Y3RfdHlwZSI6IkZydWl0cyIsInByb2R1Y3RfdGl0bGUiOiJPcmFuZ2UgVmFsZW5jaWEiLCJwcm9kdWN0X2Rlc2NyaXB0aW9uIjoiMSBraWxvZ3JhbSA9IDYgcGllY2VzIChhcHByb3guKSAgXG5PbmUgb3JhbmdlIHByb3ZpZGVzIGEgcmFuZ2Ugb2Ygdml0YW1pbnMgYW5kIG1pbmVyYWxzOyBhIHN0YWdnZXJpbmcgMTMwIHBlcmNlbnQgb2YgeW91ciB2aXRhbWluIEMgbmVlZHMgZm9yIHRoZSBkYXkuIEFjY29yZGluZyB0byB0aGUgQW1lcmljYW4gSGVhcnQgQXNzb2NpYXRpb24sIGVhdGluZyBoaWdoZXIgYW1vdW50cyBvZiBhIGNvbXBvdW5kIGZvdW5kIGluIGNpdHJ1cyBmcnVpdHMgbGlrZSBvcmFuZ2VzIGFuZCBncmFwZWZydWl0IG1heSBsb3dlciBpc2NoZW1pYyBzdHJva2UgcmlzayBmb3Igd29tZW4uXG4gICAgIiwidmFyaWFudF90aXRsZSI6IlggMC4yNTAga2dzIiwidmFyaWFudF9vcHRpb25zIjpbIlggMC4yNTAga2dzIl19LHsiaWQiOjE1NDEyMzU4MjE3Nzc5LCJwcm9wZXJ0aWVzIjpudWxsLCJxdWFudGl0eSI6MSwidmFyaWFudF9pZCI6MTU0MTIzNTgyMTc3NzksImtleSI6IjE1NDEyMzU4MjE3Nzc5OmFjNmEwZDgyY2JiOTRmODhjYzVjZjZkOTkzMjc0MTMwIiwidGl0bGUiOiJDbGVhbmVkIFdpbGQgTG9jYWwgU3F1aWQgLSBQaWVjZSIsInByaWNlIjo2MjksIm9yaWdpbmFsX3ByaWNlIjo2MjksImRpc2NvdW50ZWRfcHJpY2UiOjYyOSwibGluZV9wcmljZSI6NjI5LCJvcmlnaW5hbF9saW5lX3ByaWNlIjo2MjksInRvdGFsX2Rpc2NvdW50IjowLCJkaXNjb3VudHMiOltdLCJza3UiOiJBU01BWEFFWFhDTFdETENTUSIsImdyYW1zIjowLCJ2ZW5kb3IiOiJGcm9tIFVBRSIsInRheGFibGUiOnRydWUsInByb2R1Y3RfaWQiOjEwMjQ1MDU0NDc4LCJnaWZ0X2NhcmQiOmZhbHNlLCJ1cmwiOiJcL3Byb2R1Y3RzXC9jbGVhbmVkLXdpbGQtbG9jYWwtc3F1aWQ/dmFyaWFudD0xNTQxMjM1ODIxNzc3OSIsImltYWdlIjoiaHR0cHM6XC9cL2Nkbi5zaG9waWZ5LmNvbVwvc1wvZmlsZXNcLzFcLzE4OTFcLzY0MDVcL3Byb2R1Y3RzXC9zaG9wLW9ubGluZS1mcm9tLXVhZS1zZWFmb29kLWNsZWFuZWQtd2lsZC1sb2NhbC1zcXVpZC1mcmVzaC1mb29kLWluLWR1YmFpLWFuZC1hYnUtZGhhYmktMjQ2MjQyNTI2MjIuanBnP3Y9MTUzNjc4NzY0NCIsImhhbmRsZSI6ImNsZWFuZWQtd2lsZC1sb2NhbC1zcXVpZCIsInJlcXVpcmVzX3NoaXBwaW5nIjp0cnVlLCJwcm9kdWN0X3R5cGUiOiJTZWFmb29kIiwicHJvZHVjdF90aXRsZSI6IkNsZWFuZWQgV2lsZCBMb2NhbCBTcXVpZCIsInByb2R1Y3RfZGVzY3JpcHRpb24iOiIgMSBwaWVjZSA9IDE1MCBncmFtcyAoYXBwcm94LilcblRlbmRlciwgbWlsZCwgYW5kIHBsZWFzYW50bHkgY2hld3ksIHNxdWlkIHNob3VsZCBiZSBjb29rZWQgZm9yIGVpdGhlciBhIGZldyBtaW51dGVzIChncmlsbGluZywgZnJ5aW5nKSBvciBhIHZlcnkgbG9uZyB0aW1lIChzdGV3aW5nLCBicmFpc2luZykuIEFueXRoaW5nIGluIGJldHdlZW4gZ2l2ZXMgaXQgYSBydWJiZXJ5IHRleHR1cmUuIEJlY2F1c2UgaXRzIHNsaWdodGx5IG51dHR5IGZsYXZvciBkb2Vzbid0IG92ZXJ3aGVsbSBhIGRpc2gsIHNxdWlkIHdvcmtzIGluIGFueXRoaW5nIGZyb20gc2FsYWQgdG8gYm91aWxsYWJhaXNzZS4gU2xpY2UgaXQgaW50byByaW5ncyBhbmQgZnJ5IGl0LCBvciBsZWF2ZSBpdCB3aG9sZSBhbmQgc3R1ZmYgaXQuXG5cblxuXG5cblxuXG4iLCJ2YXJpYW50X3RpdGxlIjoiUGllY2UiLCJ2YXJpYW50X29wdGlvbnMiOlsiUGllY2UiXX1dLCJyZXF1aXJlc19zaGlwcGluZyI6dHJ1ZSwiY3VycmVuY3kiOiJBRUQifQ==
+    
++ Parameters
+
+    + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team.
+    
+    + customer_id (required, number) ... Currently logged in customer id (shopify customer id).
+    
+    + action (required, String) ... get_spent_rules
+    
++ Response 200 (application/json)  
+
+                {
+            "code": {
+                "rules": [
+                    {
+                        "is_eligible": true,
+                        "rule": {
+                            "id": 5,
+                            "rule_id": 5,
+                            "credit_value": 100,
+                            "column_value": "1:-1",
+                            "is_fixed": 0,
+                            "module_on": "cart",
+                            "comment_text": "spent credit on cart/checkout",
+                            "is_active": 1,
+                            "rule_type": "spent",
+                            "time_upto": -1,
+                            "campaign_id": -1,
+                            "deleted_at": null,
+                            "created_at": "2018-05-10 12:10:27",
+                            "updated_at": "2018-09-21 07:52:06",
+                            "rule": {
+                                "id": 5,
+                                "column_id": 4,
+                                "relation_id": 4,
+                                "rule_type": "spent",
+                                "created_at": "2018-05-10 12:08:28",
+                                "updated_at": "2018-09-21 07:50:45",
+                                "column": {
+                                    "id": 4,
+                                    "name": "cart_value",
+                                    "display_name": "cart value",
+                                    "value_type": "float",
+                                    "created_at": "2018-05-10 12:08:28",
+                                    "updated_at": "2018-05-10 12:08:28"
+                                },
+                                "relation": {
+                                    "id": 4,
+                                    "name": "between",
+                                    "display_name": "between",
+                                    "symbol": "between",
+                                    "created_at": "2018-09-21 07:50:45",
+                                    "updated_at": "2018-09-21 07:50:45"
+                                }
+                            }
+                        },
+                        "applicable_credits": 3302,
+                        "result": {
+                            "column_compare_value": 3302,
+                            "min_column_value": "-1",
+                            "max_column_value": "1",
+                            "after_column_value": 3302,
+                            "applicable_credits": 3302
+                        }
+                    }
+                ],
+                "total_credits": 61000,
+                "result": [
+                    {
+                        "is_eligible": true,
+                        "rule": {
+                            "id": 5,
+                            "rule_id": 5,
+                            "credit_value": 100,
+                            "column_value": "1:-1",
+                            "is_fixed": 0,
+                            "module_on": "cart",
+                            "comment_text": "spent credit on cart/checkout",
+                            "is_active": 1,
+                            "rule_type": "spent",
+                            "time_upto": -1,
+                            "campaign_id": -1,
+                            "deleted_at": null,
+                            "created_at": "2018-05-10 12:10:27",
+                            "updated_at": "2018-09-21 07:52:06",
+                            "rule": {
+                                "id": 5,
+                                "column_id": 4,
+                                "relation_id": 4,
+                                "rule_type": "spent",
+                                "created_at": "2018-05-10 12:08:28",
+                                "updated_at": "2018-09-21 07:50:45",
+                                "column": {
+                                    "id": 4,
+                                    "name": "cart_value",
+                                    "display_name": "cart value",
+                                    "value_type": "float",
+                                    "created_at": "2018-05-10 12:08:28",
+                                    "updated_at": "2018-05-10 12:08:28"
+                                },
+                                "relation": {
+                                    "id": 4,
+                                    "name": "between",
+                                    "display_name": "between",
+                                    "symbol": "between",
+                                    "created_at": "2018-09-21 07:50:45",
+                                    "updated_at": "2018-09-21 07:50:45"
+                                }
+                            }
+                        },
+                        "applicable_credits": 3302,
+                        "result": {
+                            "column_compare_value": 3302,
+                            "min_column_value": "-1",
+                            "max_column_value": "1",
+                            "after_column_value": 3302,
+                            "applicable_credits": 3302
+                        }
+                    }
+                ]
+            },
+            "status": true,
+            "credits": 61000,
+            "is_credit_on_cart": "1",
+            "is_credit_on_checkout": "0"
+        }
+
+### Apply Store Credit [POST]
+
+You can apply store credit for customer in cart page.It will return you generated discount code to apply it in checkout.
+
++ attributes
+
+    + cart_data (string) - cart data from shopify -> json formatted -> base64encoded cart 
+            1. In javascript you can use this after receiving cart from (/cart.js) 
+               btoa(unescape(encodeURIComponent(JSON.stringify(cart))))
+    
+    + spent_rule_id (number) - Rule id for credit spent which is selected by customer you can get available spent rules by using get_spent_rules API
+    
+    + cart_token (string) - cart token provided in shopify (/cart.js)
+
++ Request (application/x-www-form-urlencoded)
+
+        data: eyJ0b2tlbiI6ImIxMTdjNjI0ZDAwN2FiMWFiZTYyNjdlNWVmOWU0OGFkIiwibm90ZSI6bnVsbCwiYXR0cmlidXRlcyI6e30sIm9yaWdpbmFsX3RvdGFsX3ByaWNlIjozMzAyLCJ0b3RhbF9wcmljZSI6MzMwMiwidG90YWxfZGlzY291bnQiOjAsInRvdGFsX3dlaWdodCI6MC4wLCJpdGVtX2NvdW50IjozLCJpdGVtcyI6W3siaWQiOjE1NDEyMzczNTIwNDM1LCJwcm9wZXJ0aWVzIjpudWxsLCJxdWFudGl0eSI6MSwidmFyaWFudF9pZCI6MTU0MTIzNzM1MjA0MzUsImtleSI6IjE1NDEyMzczNTIwNDM1OmU4MTIyMzk5YTAzZTJhNzZlNDllYTZmN2MyNjcxMTc2IiwidGl0bGUiOiJTa2lubGVzcyBDaGlja2VuIEJyZWFzdCAtIFBhY2tldCIsInByaWNlIjoyNTczLCJvcmlnaW5hbF9wcmljZSI6MjU3MywiZGlzY291bnRlZF9wcmljZSI6MjU3MywibGluZV9wcmljZSI6MjU3Mywib3JpZ2luYWxfbGluZV9wcmljZSI6MjU3MywidG90YWxfZGlzY291bnQiOjAsImRpc2NvdW50cyI6W10sInNrdSI6IkxNSFhBRVhYQ0hTS0JSU1QiLCJncmFtcyI6MCwidmVuZG9yIjoiRnJvbSBVQUUiLCJ0YXhhYmxlIjp0cnVlLCJwcm9kdWN0X2lkIjoxMDI0NTEwNjQ0NiwiZ2lmdF9jYXJkIjpmYWxzZSwidXJsIjoiXC9wcm9kdWN0c1wvc2tpbmxlc3MtY2hpY2tlbi1icmVhc3Q/dmFyaWFudD0xNTQxMjM3MzUyMDQzNSIsImltYWdlIjoiaHR0cHM6XC9cL2Nkbi5zaG9waWZ5LmNvbVwvc1wvZmlsZXNcLzFcLzE4OTFcLzY0MDVcL3Byb2R1Y3RzXC9zaG9wLW9ubGluZS1mcm9tLXVhZS1tZWF0LXNraW5sZXNzLWNoaWNrZW4tYnJlYXN0LWZyZXNoLWZvb2QtaW4tZHViYWktYW5kLWFidS1kaGFiaS0yNDYyMTE5OTE4Mi5qcGc/dj0xNTEzMjAwMzIwIiwiaGFuZGxlIjoic2tpbmxlc3MtY2hpY2tlbi1icmVhc3QiLCJyZXF1aXJlc19zaGlwcGluZyI6dHJ1ZSwicHJvZHVjdF90eXBlIjoiTWVhdCIsInByb2R1Y3RfdGl0bGUiOiJTa2lubGVzcyBDaGlja2VuIEJyZWFzdCIsInByb2R1Y3RfZGVzY3JpcHRpb24iOiIxIHBhY2tldCA9IDUwMCBncmFtcyA9IDItMyBwaWVjZXMgKGFwcHJveC4pIFxuUGx1bXAsIGhlYWx0aGZ1bCBhbmQgYnVyc3Rpbmcgd2l0aCBmbGF2b3JmdWwganVpY2VzLCB0aGVzZSBjaGlja2VuIGJyZWFzdHMgYXJlIGlkZWFsIGZvciBzYW5kd2ljaGVzIGFuZCBzYWxhZHMuIFJ1YiB3aXRoIGEgZ2VuZXJvdXMgYW1vdW50IG9mIG9saXZlIG9pbCBhbmQgZ3JpbGwsIHR1cm5pbmcgYW5kIHJvdGF0aW5nIHRvIG1ha2UgYSBjcmlzc2Nyb3NzIHBhdHRlcm4uIFNlcnZlIG9uIGNydXN0eSBicmVhZCB3aXRoIGdyZWVucywgdGhpbiBzbGljZXMgb2YgY3Jpc3AsIGp1aWN5IHBlYXIgYW5kIGhvbmV5IG11c3RhcmQgZm9yIGEgdW5pcXVlIHN3ZWV0IGFuZCBzYXZvcnkgc2FuZHdpY2guIiwidmFyaWFudF90aXRsZSI6IlBhY2tldCIsInZhcmlhbnRfb3B0aW9ucyI6WyJQYWNrZXQiXX0seyJpZCI6MTU0MTIzNDQ5NDY3MzksInByb3BlcnRpZXMiOnsiUXVhbnRpdHkiOiIwLjI1S2cifSwicXVhbnRpdHkiOjEsInZhcmlhbnRfaWQiOjE1NDEyMzQ0OTQ2NzM5LCJrZXkiOiIxNTQxMjM0NDk0NjczOTpiYzE5NjdkOGExZDZiODljYWMxNTNlNDkyMGI5ZDNmNiIsInRpdGxlIjoiT3JhbmdlIFZhbGVuY2lhIC0gWCAwLjI1MCBrZ3MiLCJwcmljZSI6MTAwLCJvcmlnaW5hbF9wcmljZSI6MTAwLCJkaXNjb3VudGVkX3ByaWNlIjoxMDAsImxpbmVfcHJpY2UiOjEwMCwib3JpZ2luYWxfbGluZV9wcmljZSI6MTAwLCJ0b3RhbF9kaXNjb3VudCI6MCwiZGlzY291bnRzIjpbXSwic2t1IjoiQkJCWFhNUUZYWDEwMTU5IiwiZ3JhbXMiOjAsInZlbmRvciI6IkZyb20gU291dGggQWZyaWNhIiwidGF4YWJsZSI6dHJ1ZSwicHJvZHVjdF9pZCI6MTAyNDUwNjY1NzQsImdpZnRfY2FyZCI6ZmFsc2UsInVybCI6IlwvcHJvZHVjdHNcL29yYW5nZS12YWwtZWd5cHQ/dmFyaWFudD0xNTQxMjM0NDk0NjczOSIsImltYWdlIjoiaHR0cHM6XC9cL2Nkbi5zaG9waWZ5LmNvbVwvc1wvZmlsZXNcLzFcLzE4OTFcLzY0MDVcL3Byb2R1Y3RzXC9zaG9wLW9ubGluZS1mcm9tLWVneXB0LWZydWl0cy12YWxlbmNpYS1vcmFuZ2UtZnJlc2gtZm9vZC1pbi1kdWJhaS1hbmQtYWJ1LWRoYWJpLTI0NjI0MzM2MDE0LmpwZz92PTE1Mzg1NzUzMTIiLCJoYW5kbGUiOiJvcmFuZ2UtdmFsLWVneXB0IiwicmVxdWlyZXNfc2hpcHBpbmciOnRydWUsInByb2R1Y3RfdHlwZSI6IkZydWl0cyIsInByb2R1Y3RfdGl0bGUiOiJPcmFuZ2UgVmFsZW5jaWEiLCJwcm9kdWN0X2Rlc2NyaXB0aW9uIjoiMSBraWxvZ3JhbSA9IDYgcGllY2VzIChhcHByb3guKSAgXG5PbmUgb3JhbmdlIHByb3ZpZGVzIGEgcmFuZ2Ugb2Ygdml0YW1pbnMgYW5kIG1pbmVyYWxzOyBhIHN0YWdnZXJpbmcgMTMwIHBlcmNlbnQgb2YgeW91ciB2aXRhbWluIEMgbmVlZHMgZm9yIHRoZSBkYXkuIEFjY29yZGluZyB0byB0aGUgQW1lcmljYW4gSGVhcnQgQXNzb2NpYXRpb24sIGVhdGluZyBoaWdoZXIgYW1vdW50cyBvZiBhIGNvbXBvdW5kIGZvdW5kIGluIGNpdHJ1cyBmcnVpdHMgbGlrZSBvcmFuZ2VzIGFuZCBncmFwZWZydWl0IG1heSBsb3dlciBpc2NoZW1pYyBzdHJva2UgcmlzayBmb3Igd29tZW4uXG4gICAgIiwidmFyaWFudF90aXRsZSI6IlggMC4yNTAga2dzIiwidmFyaWFudF9vcHRpb25zIjpbIlggMC4yNTAga2dzIl19LHsiaWQiOjE1NDEyMzU4MjE3Nzc5LCJwcm9wZXJ0aWVzIjpudWxsLCJxdWFudGl0eSI6MSwidmFyaWFudF9pZCI6MTU0MTIzNTgyMTc3NzksImtleSI6IjE1NDEyMzU4MjE3Nzc5OmFjNmEwZDgyY2JiOTRmODhjYzVjZjZkOTkzMjc0MTMwIiwidGl0bGUiOiJDbGVhbmVkIFdpbGQgTG9jYWwgU3F1aWQgLSBQaWVjZSIsInByaWNlIjo2MjksIm9yaWdpbmFsX3ByaWNlIjo2MjksImRpc2NvdW50ZWRfcHJpY2UiOjYyOSwibGluZV9wcmljZSI6NjI5LCJvcmlnaW5hbF9saW5lX3ByaWNlIjo2MjksInRvdGFsX2Rpc2NvdW50IjowLCJkaXNjb3VudHMiOltdLCJza3UiOiJBU01BWEFFWFhDTFdETENTUSIsImdyYW1zIjowLCJ2ZW5kb3IiOiJGcm9tIFVBRSIsInRheGFibGUiOnRydWUsInByb2R1Y3RfaWQiOjEwMjQ1MDU0NDc4LCJnaWZ0X2NhcmQiOmZhbHNlLCJ1cmwiOiJcL3Byb2R1Y3RzXC9jbGVhbmVkLXdpbGQtbG9jYWwtc3F1aWQ/dmFyaWFudD0xNTQxMjM1ODIxNzc3OSIsImltYWdlIjoiaHR0cHM6XC9cL2Nkbi5zaG9waWZ5LmNvbVwvc1wvZmlsZXNcLzFcLzE4OTFcLzY0MDVcL3Byb2R1Y3RzXC9zaG9wLW9ubGluZS1mcm9tLXVhZS1zZWFmb29kLWNsZWFuZWQtd2lsZC1sb2NhbC1zcXVpZC1mcmVzaC1mb29kLWluLWR1YmFpLWFuZC1hYnUtZGhhYmktMjQ2MjQyNTI2MjIuanBnP3Y9MTUzNjc4NzY0NCIsImhhbmRsZSI6ImNsZWFuZWQtd2lsZC1sb2NhbC1zcXVpZCIsInJlcXVpcmVzX3NoaXBwaW5nIjp0cnVlLCJwcm9kdWN0X3R5cGUiOiJTZWFmb29kIiwicHJvZHVjdF90aXRsZSI6IkNsZWFuZWQgV2lsZCBMb2NhbCBTcXVpZCIsInByb2R1Y3RfZGVzY3JpcHRpb24iOiIgMSBwaWVjZSA9IDE1MCBncmFtcyAoYXBwcm94LilcblRlbmRlciwgbWlsZCwgYW5kIHBsZWFzYW50bHkgY2hld3ksIHNxdWlkIHNob3VsZCBiZSBjb29rZWQgZm9yIGVpdGhlciBhIGZldyBtaW51dGVzIChncmlsbGluZywgZnJ5aW5nKSBvciBhIHZlcnkgbG9uZyB0aW1lIChzdGV3aW5nLCBicmFpc2luZykuIEFueXRoaW5nIGluIGJldHdlZW4gZ2l2ZXMgaXQgYSBydWJiZXJ5IHRleHR1cmUuIEJlY2F1c2UgaXRzIHNsaWdodGx5IG51dHR5IGZsYXZvciBkb2Vzbid0IG92ZXJ3aGVsbSBhIGRpc2gsIHNxdWlkIHdvcmtzIGluIGFueXRoaW5nIGZyb20gc2FsYWQgdG8gYm91aWxsYWJhaXNzZS4gU2xpY2UgaXQgaW50byByaW5ncyBhbmQgZnJ5IGl0LCBvciBsZWF2ZSBpdCB3aG9sZSBhbmQgc3R1ZmYgaXQuXG5cblxuXG5cblxuXG4iLCJ2YXJpYW50X3RpdGxlIjoiUGllY2UiLCJ2YXJpYW50X29wdGlvbnMiOlsiUGllY2UiXX1dLCJyZXF1aXJlc19zaGlwcGluZyI6dHJ1ZSwiY3VycmVuY3kiOiJBRUQifQ==
+        spent_rule_id: 5
+        cart_token: b117c624d007ab1abe6267e5ef9e48ad
+
++ Parameters
+
+    + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team
+    
+    + customer_id (required, number) ... Currently logged in customer id (shopify customer id)
+    
+    + action (required, String) ... apply_credit
+
++ Response 200 (application/json)    
+
+            {
+            "status": true,
+            "cart_value_to_apply_credit": 33.02,
+            "code": "FLITS_1_182_749145030707_1543987268",
+            "cart": {
+                "id": 14649,
+                "customer_id": 5343,
+                "token": "b117c624d007ab1abe6267e5ef9e48ad",
+                "amount": 33.02,
+                "price_rule_id": 327324565555,
+                "code": "FLITS_1_182_749145030707_1543987268",
+                "rule_id": null,
+                "code_id": 1520765468723,
+                "applied_discount": 0.33020000000000005,
+                "credits_removed_from_customer": 0,
+                "order_id": null,
+                "order_number": null,
+                "total_order_amount": null,
+                "cart_created_at": "2018-12-05 05:15:22",
+                "checkout_created_at": null,
+                "order_created_at": null,
+                "created_at": "2018-12-05 05:15:22",
+                "updated_at": "2018-12-05 05:21:09"
+            },
+            "customer": {
+                "id": 5343,
+                "customer_id": 749145030707,
+                "name": "Niwin Santhosh",
+                "email": "niwin@vajro.com",
+                "is_from_shopify": 1,
+                "is_from_mailchimp": 0,
+                "accepts_marketing": 0,
+                "is_subscriber": 0,
+                "state": "enabled",
+                "phone": null,
+                "birthdate": null,
+                "gender": null,
+                "credits": 61000,
+                "points": 0,
+                "is_register_given": 1,
+                "is_subscriber_given": 1,
+                "is_first_order_given": 0,
+                "referral_code": "I79GAv5343",
+                "refer_by": null,
+                "created_at": "2018-10-22 18:34:44",
+                "updated_at": "2018-11-29 11:20:25",
+                "total_spent_credits": 0,
+                "refund_credits": 0,
+                "promotional_credits": 0
+            }
+        }
+    
+
+## Wishlist [/{user_id}/wishlist/{action}{?token}]
+
+
+### View Wishlist [GET]
+
++ Response 200 (application/json)
+    
+        {
+        
+        }
+
+     
+### Add to Wishlist [POST]
+
++ attributes
+
+    + customer_id (string) - If customer logged in then shopify customer id and not logged in then empty.
+    
+    + customer_email (string) - Customer's email id in which given product is going to be added.
+    
+    + wsl_product_count (number) - Updated count for product which will going to after current request.
+        ex:  currently wsl_product_count=1 But after current request it will become 2 so you need to send 2 here.
+        
+    + product_handle (string) - New product's handle which is going to added in wishlist.
+    
+    + product_id (string) - New product's id which is going to added in wishlist.
+    
+    + products_handle (string) - This will be in response. All products handle which have added as wishlist by customer.
+
++ Parameters 
+
+    + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team.
+    
+    + action (required, String) ... add_to_wishlist
+    
++ Request (application/x-www-form-urlencoded)
+    
+        customer_id: 448647725113
+        customer_email: milind@getflits.com
+        product_id: 654721089593
+        product_handle: bond-street-jj-e10535-unisex
+        wsl_product_count: 1
+
++ Response 200 (application/json)
+    
+        {
+            "status":true,
+            "products_handle":"bond-street-jj-e10477-unisex,bond-street-jj-e10535-unisex"
+        }
+
+        
+### Remove from wishlist [DELETE]
+
++ attributes
+
+    + customer_id (string) - If customer logged in then shopify customer id and not logged in then empty.
+    
+    + customer_email (string) - Customer's email id in which given product is going to be removed.
+    
+    + wsl_product_count (number) - Updated count for product which will going to after current request.
+        ex:  currently wsl_product_count=1 But after current request it will become 0 so you need to send 0 here.
+        
+    + product_handle (string) - Product's handle which is going to removed from wishlist.
+    
+    + product_id (string) - Product's id which is going to removed from wishlist.
+    
+    + products_handle (string) - This will be in response. All products handle which have currently in wishlist by customer.
+
++ Parameters 
+
+    + token (required, string) ... Unique token for your store provided by flits Team
+    
+    + user_id (required, number) ... Uniquie User id provided by flits team.
+    
+    + action (required, String) ... remove_from_wishlist
+    
++ Request (application/x-www-form-urlencoded)
+    
+        customer_id: 448647725113
+        customer_email: milind@getflits.com
+        product_id: 654721089593
+        product_handle: bond-street-jj-e10535-unisex
+        wsl_product_count: 1
+
++ Response 200 (application/json)
+    
+        {
+            "status":true,
+            "products_handle":"bond-street-jj-e10477-unisex"
+        }
